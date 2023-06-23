@@ -1,4 +1,4 @@
-#include "pitykity.h"
+#include "defines.h"
 
 void led_pin_setup()
 {
@@ -15,6 +15,8 @@ void led_distance(int dis)
     fullness = map(dis, 3, 25, 0, 100);
 
     if(fullness <= 100 && fullness >= 77){
+        // buzzer kodu eklenecek
+        empty_buzzer();
         digitalWrite(LED_kirmizi, HIGH);
         digitalWrite(LED_mavi1, LOW);
         digitalWrite(LED_mavi2, LOW);

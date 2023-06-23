@@ -1,13 +1,13 @@
-#include "pitykity.h"
+#include "defines.h"
 
 // Define NTP Client to get time
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
 WiFiManager wifiManager;
 
-constexpr char WIFI_SSID[] = "Akif's iPhone";
-constexpr char WIFI_PASSWORD[] = "12345678";
-constexpr char TOKEN[] = "Vm3jXfFIB8AdQO3bvVUp";
+constexpr char WIFI_SSID[] = "SOFTITO";
+constexpr char WIFI_PASSWORD[] = "Soft2022iTO";
+constexpr char TOKEN[] = "Ikomv6yGxenrzHduhKMh";
 constexpr char THINGSBOARD_SERVER[] = "thingsboard.cloud";
 constexpr uint16_t THINGSBOARD_PORT = 1883U;     // MQTT port used to communicate with the server, 1883 is the default unencrypted MQTT port.
 constexpr uint32_t MAX_MESSAGE_SIZE = 256U;      // Maximum size packets
@@ -21,6 +21,7 @@ constexpr char LED_STATE_ATTR[] = "ledState";
 
 // Statuses for subscribing to rpc
 bool subscribed = false;
+
 
 // handle led state and mode changes
 volatile bool attributesChanged = false;
@@ -66,7 +67,7 @@ void InitWiFi() {
 
   while (1) {
     // Delay 500ms until a connection has been succesfully established
-    if (i > 20){
+    if (i > 20) {
       wifiManager.autoConnect();
       delay(11000);
       break;
@@ -237,17 +238,13 @@ void thingsboard_loop() {
       return;
     }
   }
-
-
   // Sending telemetry every telemetrySendInterval time
   if (millis() - previousDataSend > telemetrySendInterval) {
     previousDataSend = millis();
-    tb.sendTelemetryInt("rand", random(0, 100));
-    tb.sendAttributeInt("rssi", WiFi.RSSI());
-    tb.sendAttributeInt("channel", WiFi.channel());
-    tb.sendAttributeString("bssid", WiFi.BSSIDstr().c_str());
-    tb.sendAttributeString("localIp", WiFi.localIP().toString().c_str());
-    tb.sendAttributeString("ssid", WiFi.SSID().c_str());
+    tb.sendTelemetryInt("rssi", WiFi.RSSI());
+    tb.sendTelemetryInt("channel", WiFi.channel());
+    tb.sendTelemetryString("bssid", WiFi.BSSIDstr().c_str());
+    tb.sendTelemetryString("ssid", WiFi.SSID().c_str());
     tb.sendTelemetryString("LOCAL_IP", WiFi.localIP().toString().c_str());
     tb.sendTelemetryString("MAC", WiFi.macAddress().c_str());
     tb.sendTelemetryInt("Timestamp", timeClient.getEpochTime());
@@ -255,13 +252,39 @@ void thingsboard_loop() {
     tb.sendTelemetryString("Tarih", String(currentDate).c_str());
     String nhm = get_web_hour_night() + ':' + get_web_minute_night();
     String mhm = get_web_hour_morning() + ':' + get_web_minute_morning();
+    Serial.println(nhm);
     tb.sendTelemetryString("AksamSaati", String(nhm).c_str());
     tb.sendTelemetryString("SabahSaati", String(mhm).c_str());
-    tb.sendTelemetryString("Miktar", String(90).c_str());
-    if (String(n)) 
-    sendMamaMiktari(13);
-  }
+    int full;
 
+    full = get_fullness();
+    if (full > 100)
+        full = 100;
+    else if (full < 0)
+      full = 0;
+
+    tb.sendTelemetryString("Miktar", String(full).c_str());
+    //sendMamaMiktari(13);
+    if (isNight() && currentHour == get_web_hour_night().toInt() && currentMinute == get_web_minute_night().toInt() == 1) {
+      step_get(get_web_food_value().toInt());
+      Serial.println("mama dokuldu");
+      out_buzzer();
+      delay(60000);
+    }
+    if (isMornign() && currentHour == get_web_hour_morning().toInt() && currentMinute == get_web_minute_morning().toInt() == 1) {
+      step_get(get_web_food_value().toInt());
+      Serial.println("mama dokuldu");
+      out_buzzer();
+      delay(60000);
+    }
+
+    if (foodCheck()) {
+      step_get(get_web_food_value().toInt());
+      Serial.println("mama dokuldu");
+      out_buzzer();
+      delay(60000);
+    }
+  }
   tb.loop();
 }
 

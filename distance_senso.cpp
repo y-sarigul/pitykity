@@ -1,4 +1,4 @@
-#include "pitykity.h"
+#include "defines.h"
 
 const int trigPin = 23; // Tetikleme pini
 const int echoPin = 22; // Yankı pini

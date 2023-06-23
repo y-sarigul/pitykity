@@ -1,18 +1,30 @@
-// #include "pitykity.h"
+#include "defines.h"
 
-// void setup_buzzer()
-// {
-//     pinMode(PIN_BUZZER, OUTPUT);
-// }
+void setup_buzzer()
+{
+   pinMode(BUZZER_PIN, OUTPUT);
+}
 
-// void use_buzzer()
-// {
-//     tone(buzzer, 50);
-//     delay(10);
-//     tone(buzzer, 150);
-//     delay(10);
-//     tone(buzzer, 50);
-//     delay(10);
-//     tone(buzzer, 150);
-//     delay(10);
-// }
+void out_buzzer()
+{
+  digitalWrite(BUZZER_PIN, HIGH);
+  delay(1000);
+  digitalWrite(BUZZER_PIN, LOW);
+  delay(1000);
+}
+
+void empty_buzzer()
+{
+  digitalWrite(BUZZER_PIN, HIGH);
+  delay(1000);
+  digitalWrite(BUZZER_PIN, LOW);
+  delay(1000);
+  digitalWrite(BUZZER_PIN, HIGH);
+  delay(1000);
+  digitalWrite(BUZZER_PIN, LOW);
+  delay(1000);
+  digitalWrite(BUZZER_PIN, HIGH);
+  delay(1000);
+  digitalWrite(BUZZER_PIN, LOW);
+  delay(1000);
+}

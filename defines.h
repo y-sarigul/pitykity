@@ -1,5 +1,5 @@
-#ifndef PITYKITY_H
-#define PITYKITY_H
+#ifndef DEFINES_H
+#define DEFINES_H
 
 #include <Arduino.h>
 #include <WebServer.h>
@@ -35,16 +35,16 @@ String get_web_minute_morning();
 String get_web_food_value();
 int isMornign();
 int isNight();
+int foodCheck(); 
 
 
+//////////////////////////////Utils////////////////////////////////////
+int get_fullness();
 //////////////////////////////Buzzer////////////////////////////////////
-#define PIN_BUZZER 33
+#define BUZZER_PIN 33
 void setup_buzzer();
-void use_buzzer();
-/////////////////////////////Connect_wifi///////////////////////////////
-// void connecting_wifi();
-/////////////////////////////Time///////////////////////////////////////
-// void get_time_c();
+void empty_buzzer();
+void out_buzzer();
 /////////////////////////////Distance_sensor////////////////////////////
 #define SES_HIZI 0.034
 void ditance_sensor_setup();
@@ -63,7 +63,7 @@ void led_distance(int);
 #define IN3 5 
 #define IN4 17 
 void step_set();
-void step_get();
+void step_get(int value);
 /////////////////////////////Creating File////////////////////////////
 void file_setup();
 void write_file(char *line);
@@ -117,4 +117,4 @@ void thingsboard_setup();
 void thingsboard_loop();
 
 ////////////////////////////////////////////////////////////////////
-#endif // !PITYKITY_H
+#endif // !DEFINES_H

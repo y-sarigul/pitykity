@@ -1,4 +1,5 @@
-#include "pitykity.h"
+#include "defines.h"
+
 WebServer server(80);
 
 void handleRoot() {
@@ -46,7 +47,7 @@ void handleRoot() {
             }
 
             input[type="button"] {
-                background-color: #4caf50;
+                background-color: #ff8000;
                 color: #fff;
                 border: none;
                 padding: 10px 20px;
@@ -56,7 +57,7 @@ void handleRoot() {
             }
 
             input[type="button"]:hover {
-                background-color: #45a049;
+                background-color: #ff8000;
             }
 
             input[type="checkbox"] {
@@ -67,7 +68,7 @@ void handleRoot() {
     <body>
         <h2>Kitt's Kitchen</h2>
         <form>
-            <label for="saat1">Akşam Mama Saati:</label>
+            <label for="saat1">Aksam Mama Saati:</label>
             <label for="saat1">Saat:</label>
             <input type="number" id="saatAksam" name="saatAksam1" min="12" max="23" required>
             <label for="dakika1">Dakika:</label>
@@ -85,7 +86,7 @@ void handleRoot() {
             <input type="text" id="miktar" name="miktar" pattern="[0-9]+" required><br><br>
 
             <input type="button" value="Kaydet" onclick="kaydet()">
-            <input type="button" value="Mama Dök" onclick="dok()">
+            <input type="button" value="Mama Dok" onclick="dok()">
         </form>
         <script>
             function kaydet() {
@@ -148,6 +149,12 @@ int isNight()
 {
     return (server.arg("aksamKontrol") ? 1 : 0);
 }
+
+int foodCheck()
+{
+  return (server.arg("mamaDok") ? 0 : 1);
+}
+
 
 void handleKaydet() {
     // Serial.print("Akşam Mama Saati: ");
